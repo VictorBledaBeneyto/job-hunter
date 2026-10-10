@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.env
+data/
+salida.html
+.venv/
+.pytest_cache/

@@ -1,0 +1,82 @@
+# Configuración de búsqueda. No pongas aquí datos personales: el repositorio es público.
+# El correo de destino y las credenciales van en los "Secrets" de GitHub (ver README).
+
+busquedas:
+  # Palabras clave que se lanzan en cada portal
+  palabras_clave:
+    - desarrollador junior
+    - programador junior
+    - developer junior
+    - python junior
+    - java junior
+    - data analyst junior
+    - data engineer junior
+    - inteligencia artificial junior
+    - prácticas desarrollo software
+    - trainee developer
+  # Ubicaciones (LinkedIn e InfoJobs). "España" + remoto cubre la disponibilidad para trasladarse.
+  ubicaciones:
+    - Valencia
+    - España
+  # Solo ofertas publicadas en las últimas N horas (LinkedIn)
+  horas_antiguedad: 24
+  # Máximo de descripciones que se descargan de LinkedIn por ejecución (evita bloqueos)
+  max_descripciones_linkedin: 30
+
+tecnoempleo:
+  # Códigos de provincia de Tecnoempleo (279 = Valencia). Vacío = toda España.
+  provincias: ["279", ""]
+  # Experiencia: 1 = sin experiencia, 2 = menos de 1 año
+  experiencia: ["1", "2"]
+  terminos: [python, java, desarrollador, programador, datos, junior, inteligencia artificial]
+
+infojobs:
+  # Solo se usa si existen los secrets INFOJOBS_CLIENT_ID e INFOJOBS_CLIENT_SECRET
+  provincias: [valencia-valencia]
+  terminos: [desarrollador junior, programador, python, java, data]
+
+filtro:
+  puntuacion_minima: 3
+  # El título tiene que parecer de desarrollo / datos / IA
+  titulo_debe_contener: >-
+    desarroll|develop|program|software|ingenier|engineer|data|datos|analyst|analista|
+    \bia\b|\bai\b|machine learning|python|java|backend|back-end|full ?stack|frontend|
+    integra|sap|odoo|bi\b|power bi|cloud|devops|trainee|becari|prácticas|practicas|graduate|junior
+  # Se descartan títulos con estas palabras
+  titulo_excluye: >-
+    senior|\bsr\b|lead|principal|arquitect|architect|manager|head of|director|jefe|
+    responsable|staff|expert|experto|comercial|ventas|sales|teacher|profesor|formador
+  # Palabras que suman puntos (en título o descripción)
+  suma:
+    junior: 2
+    sin experiencia: 2
+    recién titulado: 2
+    trainee: 2
+    graduate: 2
+    prácticas: 1
+    python: 2
+    java: 2
+    spring: 2
+    sql: 1
+    machine learning: 2
+    inteligencia artificial: 2
+    big data: 1
+    datos: 1
+    data: 1
+    power bi: 1
+    fastapi: 1
+    docker: 1
+    kafka: 1
+    aws: 1
+    dam: 2
+    daw: 1
+    ciclo formativo: 1
+    remoto: 1
+    teletrabajo: 1
+  # Si la descripción contiene esto, se descarta (pide estar matriculado o mucha experiencia)
+  descripcion_excluye: >-
+    convenio (de prácticas )?con (tu|la|el|un) (universidad|centro)|estar matriculad|
+    currently enrolled|estar cursando|be enrolled|estudiante de último curso|
+    francés (nativo|c1|c2)|alemán (nativo|c1|c2)
+  # Años de experiencia a partir de los cuales se descarta
+  max_anios_experiencia: 2

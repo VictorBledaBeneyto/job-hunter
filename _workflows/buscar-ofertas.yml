@@ -1,0 +1,54 @@
+name: Buscar ofertas
+
+on:
+  schedule:
+    # Horas en UTC: 06:05 y 15:05 UTC (08:05 y 17:05 en España en horario de verano,
+    # 07:05 y 16:05 en invierno)
+    - cron: "5 6,15 * * *"
+  workflow_dispatch: {}        # botón "Run workflow" para lanzarlo a mano
+
+permissions:
+  contents: read
+
+concurrency:
+  group: buscar-ofertas
+  cancel-in-progress: false
+
+jobs:
+  buscar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      # Recupera la lista de ofertas ya enviadas (no se sube al repositorio público)
+      - name: Restaurar ofertas vistas
+        uses: actions/cache/restore@v4
+        with:
+          path: data/seen.json
+          key: seen-${{ github.run_id }}
+          restore-keys: seen-
+
+      - name: Buscar y enviar
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+          INFOJOBS_CLIENT_ID: ${{ secrets.INFOJOBS_CLIENT_ID }}
+          INFOJOBS_CLIENT_SECRET: ${{ secrets.INFOJOBS_CLIENT_SECRET }}
+        run: python -m job_hunter.main
+
+      - name: Guardar ofertas vistas
+        if: always() && hashFiles('data/seen.json') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: data/seen.json
+          key: seen-${{ github.run_id }}
